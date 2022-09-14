@@ -1,0 +1,35 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+
+  tasks:
+    - name: 01-Create a k8s namespace
+      kubernetes.core.k8s:
+        name: nginx
+        api_version: v1
+        kind: Namespace
+        state: present
+
+    - name: 02-Create a Deployment
+      kubernetes.core.k8s:
+        state: present
+        src: rancher-deployment.yml
+
+    - name: 03-Ensure a nginx Service
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: nginx
+            namespace: nginx
+          spec:
+            type: NodePort
+            ports:
+            - port: 80
+              nodePort: 32110
+              targetPort: 80
+            selector:
+              app: nginx

@@ -1,0 +1,40 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+
+  tasks:
+    - name: 01-Ensure the nginx Namespace exists.
+      kubernetes.core.k8s:
+        api_version: v1
+        kind: Namespace
+        name: nginx
+        state: present
+
+    - name: 02-Ensure the nginx Service exists in the nginx Namespace.
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: nginx
+            namespace: nginx
+          spec:
+            type: NodePort
+            ports:
+            - port: 80
+              nodePort: 32110
+              targetPort: 80
+            selector:
+              app: nginx
+
+    - name: 03-Get a list of all Services in the nginx namespace.
+      kubernetes.core.k8s_info:
+        kind: Service
+        namespace: nginx
+      register: nginx_services
+
+    - name: 04-Display number of Services in the nginx namespace.
+      debug:
+        var: nginx_services.resources | count

@@ -1,0 +1,25 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+
+  tasks:
+    - name: 01-Add harbor chart repo
+      kubernetes.core.helm_repository:
+        name: harbor
+        repo_url: "https://helm.goharbor.io"
+
+    - name: 02-Create harbor namespace
+      kubernetes.core.k8s:
+        name: harbor
+        api_version: v1
+        kind: Namespace
+        state: present
+
+    - name: 03-Deploy Harbor Helm
+      kubernetes.core.helm:
+        name: harbor
+        chart_ref: harbor/harbor
+        release_namespace: harbor
+        values_files:
+          - values.yaml
