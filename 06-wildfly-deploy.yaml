@@ -7,11 +7,12 @@
 
     - name: Copy helm file
       ansible.builtin.copy:
-        src: _build/helm
+        src: /helm
         dest: /usr/local/bin/helm
         owner: awx
         group: root
         mode: '755'
+        become: true
 
     - name: 01-Install Helm env plugin
       kubernetes.core.helm_plugin:
