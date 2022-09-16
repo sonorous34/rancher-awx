@@ -4,32 +4,40 @@
   connection: local
 
   tasks:
-    - name: 01-Add bitnami chart repo
+    - name: 01-Install Helm env plugin
+      kubernetes.core.helm_plugin:
+        plugin_path: https://github.com/adamreese/helm-env
+        state: present
+
+    - name: 02-Update Helm plugin
+      kubernetes.core.helm_plugin:
+        plugin_name: secrets
+        state: latest
+
+    - name: 03-Add bitnami chart repo
       kubernetes.core.helm_repository:
-        binary_path: "/usr/local/bin/helm"
         name: bitnami
         repo_url: "https://charts.bitnami.com/bitnami"
 
-    - name: 02-Create wildfly namespace
+    - name: 04-Create wildfly namespace
       kubernetes.core.k8s:
         name: wildfly
         api_version: v1
         kind: Namespace
         state: present
 
-    - name: 03-Create PersistentVolume
+    - name: 06-Create PersistentVolume
       kubernetes.core.k8s:
         state: present
         src: 06-wildfly_pv.yaml
 
-    - name: 04-Create PersistentVolumeClaim
+    - name: 07-Create PersistentVolumeClaim
       kubernetes.core.k8s:
         state: present
         src: 06-wildfly_pvc.yaml
 
-    - name: 04-Deploy wildfly Helm
+    - name: 08-Deploy wildfly Helm
       kubernetes.core.helm:
-        binary_path: "/usr/local/bin/helm"
         name: wildfly
         chart_ref: bitnami/wildfly
         release_namespace: wildfly
