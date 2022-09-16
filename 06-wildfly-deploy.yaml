@@ -4,6 +4,15 @@
   connection: local
 
   tasks:
+
+    - name: Copy helm file
+      ansible.builtin.copy:
+        src: _build/helm
+        dest: /usr/local/bin/helm
+        owner: awx
+        group: root
+        mode: '755'
+
     - name: 01-Install Helm env plugin
       kubernetes.core.helm_plugin:
         plugin_path: https://github.com/adamreese/helm-env
