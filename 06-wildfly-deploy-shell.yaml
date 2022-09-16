@@ -1,0 +1,32 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+
+  tasks:
+    - name: 01-Add bitnami chart repo
+      ansible.builtin.shell: add-repo-wildfly.sh
+      args:
+        executable: /bin/bash
+
+    - name: 02-Create wildfly namespace
+      kubernetes.core.k8s:
+        name: wildfly
+        api_version: v1
+        kind: Namespace
+        state: present
+
+    - name: 03-Create PersistentVolume
+      kubernetes.core.k8s:
+        state: present
+        src: 06-wildfly_pv.yaml
+
+    - name: 04-Create PersistentVolumeClaim
+      kubernetes.core.k8s:
+        state: present
+        src: 06-wildfly_pvc.yaml
+
+    - name: 04-Deploy wildfly Helm
+      ansible.builtin.shell: wildfly-deploy.sh
+      args:
+        executable: /bin/bash
