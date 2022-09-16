@@ -6,9 +6,6 @@
   tasks:
     - name: 00-Install Helm
       ansible.builtin.shell: snap install helm --classic
-      become: true
-      args:
-        executable: /bin/bash
 
     - name: 01-Install Helm env plugin
       kubernetes.core.helm_plugin:
