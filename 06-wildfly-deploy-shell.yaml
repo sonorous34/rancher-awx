@@ -5,7 +5,7 @@
 
   tasks:
     - name: 01-Add bitnami chart repo
-      ansible.builtin.shell: ./add-repo-wildfly.sh
+      ansible.builtin.shell: helm repo add bitnami https://charts.bitnami.com/bitnami
       args:
         executable: /bin/bash
 
@@ -27,6 +27,6 @@
         src: 06-wildfly_pvc.yaml
 
     - name: 04-Deploy wildfly Helm
-      ansible.builtin.shell: ./wildfly-deploy.sh
+      ansible.builtin.shell: helm install wildfly -f 06-wildfly-values.yaml bitnami/wildfly
       args:
         executable: /bin/bash
