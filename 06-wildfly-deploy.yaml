@@ -4,14 +4,8 @@
   connection: local
 
   tasks:
-    - name: Install dependencies
-      ansible.builtin.apt:
-        name:
-          - snap
-        state: latest
-
     - name: 00-Install Helm
-      ansible.builtin.shell: snap install helm --classic
+      ansible.builtin.shell: dnf install helm --classic
 
     - name: 01-Install Helm env plugin
       kubernetes.core.helm_plugin:
