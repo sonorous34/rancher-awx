@@ -6,6 +6,7 @@
   tasks:
     - name: 01-Add bitnami chart repo
       kubernetes.core.helm_repository:
+        binary_path: "/usr/local/bin/helm"
         name: bitnami
         repo_url: "https://charts.bitnami.com/bitnami"
 
@@ -28,6 +29,7 @@
 
     - name: 04-Deploy wildfly Helm
       kubernetes.core.helm:
+        binary_path: "/usr/local/bin/helm"
         name: wildfly
         chart_ref: bitnami/wildfly
         release_namespace: wildfly
