@@ -1,0 +1,18 @@
+---
+- hosts: localhost
+  gather_facts: false
+
+  plugin: kubernetes.core.k8s,kubernetes.core.helm,kubernetes.core.helm_plugin
+  connections:
+    - host: https://10.43.97.208/k8s/clusters/local
+      api_key: u-mo773yttt4:mfpb42lkbgmd2ch4h7m59q6tbrm2qlcrsl6hhvdnlg7wtdfjd8qv4v
+      validate_certs: false
+    
+  collections:
+    - kubernetes.core
+
+  tasks:
+    - name: 01-Install Helm env plugin
+      kubernetes.core.helm_plugin:
+        plugin_path: https://github.com/adamreese/helm-env
+        state: present
