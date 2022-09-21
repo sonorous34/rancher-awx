@@ -39,7 +39,7 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - "rancher.k3s.cloud"
+                - "awx.k3s.cloud"
       serviceAccountName: nginx-sa
       containers:
       - name: nginx
