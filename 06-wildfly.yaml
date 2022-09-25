@@ -1,7 +1,9 @@
 ---
-- hosts: awx.k3s.cloud
+- hosts: awx-servers
   gather_facts: false
   connection: ssh
+  become: yes
+  become_user: root
 
   tasks:
     - name: 01-Add bitnami chart repo
