@@ -1,5 +1,5 @@
 ---
-- hosts: awx.k3s.cloud
+- hosts: localhost
   gather_facts: false
   connection: ssh
 
@@ -19,12 +19,12 @@
     - name: 03-Create PersistentVolume
       kubernetes.core.k8s:
         state: present
-        src: 06-wildfly_pv.yaml
+        src: /app/rancher-awx/06-wildfly_pv.yaml
 
     - name: 04-Create PersistentVolumeClaim
       kubernetes.core.k8s:
         state: present
-        src: 06-wildfly_pvc.yaml
+        src: /app/rancher-awx/06-wildfly_pvc.yaml
 
     - name: 05-Deploy wildfly Helm
       kubernetes.core.helm:
@@ -32,4 +32,4 @@
         chart_ref: bitnami/wildfly
         release_namespace: wildfly
         values_files:
-          - 06-wildfly-values.yaml
+          - /app/rancher-awx/06-wildfly-values.yaml
