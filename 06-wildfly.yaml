@@ -1,0 +1,35 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+
+  tasks:
+    - name: 01-Add bitnami chart repo
+      kubernetes.core.helm_repository:
+        name: bitnami
+        repo_url: "https://charts.bitnami.com/bitnami"
+
+    - name: 02-Create wildfly namespace
+      kubernetes.core.k8s:
+        name: wildfly
+        api_version: v1
+        kind: Namespace
+        state: present
+
+    - name: 03-Create PersistentVolume
+      kubernetes.core.k8s:
+        state: present
+        src: 06-wildfly_pv.yaml
+
+    - name: 04-Create PersistentVolumeClaim
+      kubernetes.core.k8s:
+        state: present
+        src: 06-wildfly_pvc.yaml
+
+    - name: 05-Deploy wildfly Helm
+      kubernetes.core.helm:
+        name: wildfly
+        chart_ref: bitnami/wildfly
+        release_namespace: wildfly
+        values_files:
+          - 06-wildfly-values.yaml
