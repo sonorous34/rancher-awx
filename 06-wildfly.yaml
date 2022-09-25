@@ -1,5 +1,5 @@
 ---
-- hosts: localhost
+- hosts: awx.k3s.cloud
   gather_facts: false
   connection: ssh
 
