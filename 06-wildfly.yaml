@@ -1,5 +1,5 @@
 ---
-- hosts: 192.168.142.51
+- hosts: awx.k3s.cloud
   gather_facts: false
   connection: ssh
 
