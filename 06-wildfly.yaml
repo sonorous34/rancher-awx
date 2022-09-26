@@ -1,5 +1,5 @@
 ---
-- hosts: awx-servers
+- hosts: awx_servers
   gather_facts: false
   connection: ssh
   become: yes
